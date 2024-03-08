@@ -48,4 +48,35 @@ public class EffectGlobalItem : GlobalItem
         sb.Begin(SpriteSortMode.Deferred, sb.GraphicsDevice.BlendState, sb.GraphicsDevice.SamplerStates[0],
             sb.GraphicsDevice.DepthStencilState, sb.GraphicsDevice.RasterizerState, null, Main.UIScaleMatrix);
     }
+
+    public override bool PreDrawInWorld(SpriteBatch sb, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+    {
+        if (!Prefixes.Contains(item.prefix))
+        {
+            return true;
+        }
+
+        var texture = ModContent.Request<Texture2D>("EnchantedGlint/Enchanted");
+        var shader = ModContent.Request<Effect>("EnchantedGlint/Transform", AssetRequestMode.ImmediateLoad).Value;
+
+        shader.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly * 0.2f);
+        shader.CurrentTechnique.Passes["EnchantedPass"].Apply();
+        Main.instance.GraphicsDevice.Textures[1] = texture.Value;
+
+        sb.End();
+        sb.Begin(SpriteSortMode.Deferred, Main.spriteBatch.GraphicsDevice.BlendState, sb.GraphicsDevice.SamplerStates[0], 
+            Main.spriteBatch.GraphicsDevice.DepthStencilState, sb.GraphicsDevice.RasterizerState, shader, Main.GameViewMatrix.TransformationMatrix);
+        return true;
+    }
+
+    public override void PostDrawInWorld(SpriteBatch sb, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+    {
+        if (!Prefixes.Contains(item.prefix)) {
+            return;
+        }
+
+        sb.End();
+        sb.Begin(SpriteSortMode.Deferred, sb.GraphicsDevice.BlendState, sb.GraphicsDevice.SamplerStates[0], 
+            sb.GraphicsDevice.DepthStencilState, sb.GraphicsDevice.RasterizerState, null, Main.GameViewMatrix.TransformationMatrix);
+    }
 }
