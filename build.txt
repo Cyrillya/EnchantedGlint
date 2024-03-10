@@ -1,4 +1,4 @@
 displayName = Enchanted! Glint Effect
 author = Cyrilly
-version = 2.0
+version = 2.0.1
 side = Client
