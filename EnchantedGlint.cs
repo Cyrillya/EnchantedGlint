@@ -65,9 +65,9 @@ public class EffectGlobalItem : GlobalItem
         Main.instance.GraphicsDevice.Textures[1] = texture.Value;
 
         sb.End();
-        sb.Begin(SpriteSortMode.Deferred, Main.spriteBatch.GraphicsDevice.BlendState,
+        sb.Begin(SpriteSortMode.Deferred, sb.GraphicsDevice.BlendState,
             sb.GraphicsDevice.SamplerStates[0],
-            Main.spriteBatch.GraphicsDevice.DepthStencilState, sb.GraphicsDevice.RasterizerState, shader,
+            sb.GraphicsDevice.DepthStencilState, sb.GraphicsDevice.RasterizerState, shader,
             Main.GameViewMatrix.TransformationMatrix);
         return true;
     }
